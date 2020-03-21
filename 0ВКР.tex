@@ -827,236 +827,6 @@ U(t)f(x) =
 \section{Описание программы}
 
 \subsection{Краткий обзор}
-Рассматриваем нелокальную задачу для уравнения простого переноса.
-\begin{equation} \label{nonlocal problem with sigma = 0}
-\begin{cases}
-	\; u_t + au_x = 0, \qquad 0 \le x \le l, \quad 0 \le t \le T, \\[3mm]
-	\; u(0,t) = \gamma(t), \\[1mm]
-	\; \int\limits_{0}^{T} \eta(t) u(x,t)\,dt = \psi(x),
-\end{cases}
-\end{equation}
-$u = u(x,t) = \;?$
-
-В задаче \eqref{nonlocal problem with sigma = 0} нелокальное условие $\psi(x)$ должно удовлетворять двум условиям.
-\begin{enumerate}
-	\item $\psi(0) = 0$~--- функция из области определения оператора простого \mbox{переноса}.
-	\item 
-	\begin{equation*}
-		\int\limits_{0}^{T} \eta(t) \gamma(t)\,dt = \psi(0) 
-	\end{equation*}
-	--- условие согласования \eqref{int_eta_gamma = psi(0)}.
-\end{enumerate}
-Поскольку проверять эти условия, особенно второе, бывает затруднительно, определяется смещённая функция 
-\begin{equation} \label{tilde_psi}
-	\widetilde{\psi}(x) = \psi(x) - \int\limits_0^T \eta(t)w(x,t) \,dt - \psi(0) + \int\limits_0^T \eta(t)\gamma(t) \,dt,
-	\qquad 0 \le x \le l.
-\end{equation}
-В итоге, программа строит график функции $\varphi(x) = u(x,0)$, где $u(x,t)$~--- решение задачи
-\begin{equation} \label{nonlocal problem with tilde_psi}
-\begin{cases}
-	\; u_t + au_x = 0, \qquad 0 \le x \le l, \quad 0 \le t \le T, \\[3mm]
-	\; u(0,t) = \gamma(t), \\[1mm]
-	\; \int\limits_{0}^{T} \eta(t) u(x,t)\,dt = \widetilde{\psi}(x),
-\end{cases}
-\end{equation}
-$u = u(x,t) = \;?$
-
-Рассмотрим подробнее функцию $\widetilde{\psi}(x)$. Для её вычисления необходимо посчитать 
-интегралы
-\begin{equation} \label{integrals}
-	\int\limits_0^T \eta(t)\gamma(t) \,dt, \quad \int\limits_0^T \eta(t)w(x,t) \,dt.
-\end{equation}
-Посчитаем отдельно каждый из интегралов \eqref{integrals}.
-
-Для первого интеграла \eqref{integrals} имеем
-\begin{equation} \label{int_eta_gamma}
-	\int\limits_0^T \eta(t)\gamma(t) \,dt = \sum\limits_{k = 1}^p \int\limits_{\;\tau_{k - 1}}^{\tau_k} \gamma(t) \,dt =
-	\sum\limits_{k = 1}^p G(\tau_{k - 1}, \tau_k).
-\end{equation}
-Функция
-\begin{equation} \label{int_gamma}
-	G(t_1, t_2) = \int\limits_{t_1}^{t_2} \gamma(t) \,dt
-\end{equation}
-определяется путём аналитического вычисления интеграла, называемого в Python "символьным интегрированием".
-
-Прежде чем посчитать второй интеграл \eqref{integrals}, выпишем определение функции $w(x,t)$.
-\begin{equation*}
-w(x,t) = 
-	\begin{cases}
-		\; \gamma\left(\,t - \dfrac{x}{a}\,\right), & \qquad x \le at, \\[3mm]
-		\; \gamma(0), & \qquad x \ge at.
-	\end{cases}
-\end{equation*}
-Ясно, что нужно рассмотреть интеграл в зависимости от соотношения $x - at$.
-
-Пусть $x < aT$. Точнее, $a\tau_{m - 1} \le x \le a\tau_m$, или $\tau_{m - 1} \le x / a \le \tau_m$. Тогда, с учётом того, что
-\begin{equation*}
-	\int\limits_{t_1}^{t_2} \gamma\left(\,t - \dfrac{x}{a}\,\right) \,dt = \int\limits_{t_1 - x/a}^{t_2 - x/a} \gamma(t) \,dt = 
-	G\left(t_1 - \dfrac{x}{a}, t_2 - \dfrac{x}{a}\right),
-\end{equation*}
-получим
-\begin{equation*} \label{int_eta_w_x<aT}
-\begin{aligned}
-	& \phantom{--------} \int\limits_0^T \eta(t)w(x,t) \,dt = 
-	\sum\limits_{k = 1}^p \int\limits_{\;\tau_{k - 1}}^{\tau_k} w(x,t) \,dt = \\[2mm]
-	= & \sum\limits_{k = 1}^{m - 1} \alpha_k \!\!\int\limits_{\tau_{k - 1}}^{\tau_k}\!\! \gamma(0) dt +
-	\alpha_m \!\!\left[\, \int\limits_{\tau_{m - 1}}^{x/a}\!\!\! \gamma(0) dt +\!\!
-	\int\limits_{x/a}^{\tau_m}\!\! \gamma\!\left(\,t - \dfrac{x}{a}\,\right) dt \right] \!\!+\!
-	\sum\limits_{k = m + 1}^{p}\! \alpha_k \!\!\int\limits_{\tau_{k - 1}}^{\tau_k}\!\! \gamma \!\left(\,t - \dfrac{x}{a}\,\right)\! dt = \\[2mm]
-	=\; & \gamma(0)\sum\limits_{k = 1}^{m - 1} \alpha_k(\tau_k - \tau_{k - 1}) + 
-	\alpha_m \left[\, \gamma(0)\left(\, \dfrac{x}{a} - \tau_{m - 1} \,\right) + 
-	G\left(0, \tau_{m} - \dfrac{x}{a}\right) \,\right] + \\[2mm]
-	& \phantom{--------} + \sum\limits_{k = m + 1}^{p} \alpha_k \;G\left(\tau_{k - 1} - \dfrac{x}{a}, \tau_{k} - \dfrac{x}{a}\right).
-\end{aligned}
-\end{equation*}
-
-Теперь пусть $x \ge aT$. Имеем
-\begin{equation*} \label{int_eta_w_x>aT}
-\begin{aligned}
-	& \int\limits_0^T \eta(t)w(x,t) \,dt = \sum\limits_{k = 1}^p \int\limits_{\;\tau_{k - 1}}^{\tau_k} w(x,t) \,dt = \\[2mm]
-	= & \sum\limits_{k = 1}^{p} \alpha_k \int\limits_{\tau_{k - 1}}^{\tau_k} \gamma(0) \,dt = 
-	\gamma(0)\sum\limits_{k = 1}^{p} \alpha_k(\tau_k - \tau_{k - 1}).
-\end{aligned}	
-\end{equation*}
-
-В итоге, имеем
-\begin{equation} \label{int_eta_w_def}
-\int\limits_0^T \!\eta(t)w(x,t) dt =
-	\begin{cases}
-		\gamma(0)\sum\limits_{k = 1}^{m - 1} \alpha_k(\tau_k - \tau_{k - 1}) + 
-		\sum\limits_{k = m + 1}^{p} \alpha_k \;G\left(\tau_{k - 1} - \dfrac{x}{a}, \tau_{k} - \dfrac{x}{a}\right) + \\[7mm]
-		+ \alpha_m \!\!\left[\, \gamma(0)\!\left(\, \dfrac{x}{a} - \tau_{m - 1} \,\right) + 
-		G\!\left(0, \tau_{m} - \dfrac{x}{a}\right) \,\right]\!, \quad \dfrac{x}{a} \in [\tau_{m - 1}, \tau_m], \\[5mm]
-		\gamma(0)\sum\limits_{k = 1}^{p} \alpha_k(\tau_k - \tau_{k - 1}), \quad \dfrac{x}{a} > T.
-	\end{cases}
-\end{equation} \\
-
-Также в программе используются значения производной функции $\widetilde{\psi}(x)$
-\begin{equation} \label{d_tilde_psi}
-	\widetilde{\psi}\,'(x) = \psi'(x) - \dfrac{d}{dx}\int\limits_0^T \eta(t)w(x,t) \,dt.
-\end{equation}
-Ясно, что необходимо посчитать функцию 
-\begin{equation*}
-	\dfrac{d}{dx}\int\limits_0^T \eta(t)w(x,t) \,dt.
-\end{equation*}
-Учитывая вид функции $w(x,t)$, будем рассматривать этот интеграл в зависимости от 
-соотношения $x - at$.
-
-Пусть $x < aT$. Конкретно, $a\tau_{m - 1} \le x \le a\tau_m$. Согласно \eqref{int_eta_w_def} получим
-\begin{equation*}
-\begin{aligned}
-	& \phantom{----------} \dfrac{d}{dx}\int\limits_0^T \eta(t)w(x,t) \,dt = \\[3mm]
-	=\; & \dfrac{d}{dx}\left[\, \alpha_m \!\!\left(\, \gamma(0)\!\left(\, \dfrac{x}{a} - \tau_{m - 1} \,\right) +
-	\int\limits_{0}^{\tau_m - x/a}\! \gamma(t) \,dt \right) +
-	\sum\limits_{k = m + 1}^{p}\! \alpha_k \!\!\int\limits_{\tau_{k - 1} - x/a}^{\tau_k - x/a}\!\! \gamma(t) \,dt \,\right] = \\[3mm] 
-	=\; & \alpha_m \left[\, \gamma(0)\dfrac{1}{a} + \left(-\,\dfrac{1}{a}\right)\gamma\!\left(\tau_m - \dfrac{x}{a}\right) \,\right]
-	+ \\[3mm] +\, & \sum\limits_{k = m + 1}^{p} \alpha_k \left(-\,\dfrac{1}{a}\right) \left[\,
-	\gamma\left(\tau_k - \dfrac{x}{a}\right) - \left(\tau_{k - 1} - \dfrac{x}{a}\right) \,\right] = \\[3mm]
-	=\; & \dfrac{1}{a} \left(\, \alpha_m \left[\, \gamma(0) -
-	\gamma\!\left(\tau_m - \dfrac{x}{a}\right) \,\right] + \sum\limits_{k = m + 1}^{p} \alpha_k \left[\,\gamma\left(\tau_{k - 1} - \dfrac{x}{a}\right) - \gamma\left(\tau_k - \dfrac{x}{a}\right) \,\right] \,\right).
-\end{aligned}
-\end{equation*}
-
-Пусть $x \ge aT$. Согласно \eqref{int_eta_w_def} получим
-\begin{equation*}
-	\dfrac{d}{dx}\int\limits_0^T \eta(t)w(x,t) \,dt = 
-	\dfrac{d}{dx} \left[\, \gamma(0)\sum\limits_{k = 1}^{p} \alpha_k(\tau_k - \tau_{k - 1}) \,\right] = 0.
-\end{equation*}
-
-В результате имеем
-\begin{equation} \label{d_int_eta_w_def}
-\dfrac{d}{dx}\int\limits_0^T \eta(t)w(x,t) \,dt = 
-	\begin{cases}
-		\, \dfrac{1}{a} \,\sum\limits_{k = m + 1}^{p} \alpha_k \left[\,\gamma\left(\tau_{k - 1} - \dfrac{x}{a}\right) - \gamma\left(\tau_k - \dfrac{x}{a}\right) \,\right] + \\[7mm]
-		\, +\;\dfrac{1}{a}\,\alpha_m \left[\, \gamma(0) -\gamma\!\left(\tau_m - \dfrac{x}{a}\right) \,\right], \qquad
-		a\tau_{m - 1} \le x \le a\tau_m, \\[5mm]
-		\, 0, \qquad x > aT.
-	\end{cases}
-\end{equation}
-
-Для оценки точности вычисления функции $\varphi(x)$ выводится график разности
-\begin{equation} \label{E}
-	\int\limits_{0}^{T} \eta(t) u(x,t)\,dt - \widetilde{\psi}(x).
-\end{equation}
-Соответственно, необходимо вычислить интеграл
-\begin{equation} \label{int_eta_u}
-	\int\limits_{0}^{T} \eta(t) u(x,t)\,dt.
-\end{equation}
-
-По определению решения нелокальной задачи
-\begin{equation*}
-u(x,t) = U(t)\varphi(x) = 
-	\begin{cases}
-	\, \varphi(x - at), \qquad & x > at, \\
-	\, 0, & x \le at.
-	\end{cases}
-\end{equation*}
-Следовательно, будем рассматривать интеграл \eqref{int_eta_u} в зависимости от соотношения $x - at$.
-
-Пусть $x < aT$. Положим $a\tau_{m - 1} \le x \le a\tau_m$. Имеем
-\begin{gather*}
-	\int\limits_{0}^{T} \eta(t) u(x,t)\,dt = \sum\limits_{k = 1}^{m - 1} \alpha_k \int\limits_{\tau_{k - 1}}^{\tau_k}u(x,t) \,dt +
-	\alpha_m \int\limits_{\tau_{m - 1}}^{x/a}u(x,t) \,dt = \\[2mm]
-	= \sum\limits_{k = 1}^{m - 1} \alpha_k \int\limits_{\tau_{k - 1}}^{\tau_k}\varphi(x - at) \,dt +
-	\alpha_m \int\limits_{\tau_{m - 1}}^{x/a}\varphi(x - at) \,dt.
-\end{gather*}
-
-Пусть $x \ge aT$. Тогда
-\begin{equation*}
-	\int\limits_{0}^{T} \eta(t) u(x,t)\,dt = \sum\limits_{k = 1}^{p} \alpha_k \int\limits_{\tau_{k - 1}}^{\tau_k}u(x,t) \,dt =
-	\sum\limits_{k = 1}^{p} \alpha_k \int\limits_{\tau_{k - 1}}^{\tau_k}\varphi(x - at) \,dt.
-\end{equation*}
-
-Теперь посчитаем интеграл
-\begin{equation} \label{int_phi}
-	\varPhi(x, t_1, t_2) = \int\limits_{t_1}^{t_2}\varphi(x - at) \,dt.
-\end{equation}
-Имеем
-\begin{equation*}
-\begin{gathered}
-	\int\limits_{t_1}^{t_2}\varphi(x - at) \,dt = a\,\sum\limits_{n = 0}^{n_0 - 1} \frac{1}{\alpha_1^{\,\,n + 1}}
-	\sum\limits_{\substack{{k_i \ge 0} \\_{k_1 + ... + k_p = n}}}\!\!\!\!C_n^{\,k_1, ..., k_p}\;
-	\prod_{m = 1}^{p}(\alpha_m - \alpha_{m + 1})^{k_m} \,\times \\[5mm]
-	\times\, \int\limits_{t_1}^{t_2} \Theta\left(x - at - a\sum\limits_{i = 1}^{p}k_i\tau_i\right)
-	\psi\,'\left(x - at - a\sum\limits_{i = 1}^{p}k_i\tau_i\right) dt.
-\end{gathered}
-\end{equation*}
-Отдельно посчитаем интеграл в правой части равенства. 
-\begin{gather*}
-	\int\limits_{t_1}^{t_2} \Theta\left(x - at - a\sum\limits_{i = 1}^{p}k_i\tau_i\right)
-	\psi\,'\left(x - at - a\sum\limits_{i = 1}^{p}k_i\tau_i\right) dt = \\[5mm]
-	= \dfrac{1}{a} \int\limits_{x - a\left(t_2 + \sum\limits_{i = 1}^{p}k_i\tau_i\right)}
-	^{x - a\left(t_1 + \sum\limits_{i = 1}^{p}k_i\tau_i\right)} \Theta(t)\psi\,'(t) \,dt = \\[5mm]
-	= \dfrac{1}{a} \left\{\; \Theta\left(x - a\left[t_1 + \sum\limits_{i = 1}^{p}k_i\tau_i\right]\right)
-	\psi\left(x - a\left[t_1 + \sum\limits_{i = 1}^{p}k_i\tau_i\right]\right) - \right. \\[5mm] \left.
-	-\, \Theta\left(x - a\left[t_2 + \sum\limits_{i = 1}^{p}k_i\tau_i\right]\right)
-	\psi\left(x - a\left[t_2 + \sum\limits_{i = 1}^{p}k_i\tau_i\right]\right) \;\right\}.
-\end{gather*}
-
-
-Таким образом,
-\begin{equation} \label{int_phi_def}
-\begin{gathered} 
-	\varPhi(x, t_1, t_2) = a\,\sum\limits_{n = 0}^{n_0 - 1} \frac{1}{\alpha_1^{\,\,n + 1}}
-	\sum\limits_{\substack{{k_i \ge 0} \\_{k_1 + ... + k_p = n}}}\!\!\!\!C_n^{\,k_1, ..., k_p}\;
-	\prod_{m = 1}^{p}(\alpha_m - \alpha_{m + 1})^{k_m} \times \\[5mm] \times\,
-	\dfrac{1}{a} \left\{\; \Theta\left(x - a\left[t_1 + \sum\limits_{i = 1}^{p}k_i\tau_i\right]\right)
-	\psi\left(x - a\left[t_1 + \sum\limits_{i = 1}^{p}k_i\tau_i\right]\right) - \right. \\[5mm] \left. -\, 
-	\Theta\left(x - a\left[t_2 + \sum\limits_{i = 1}^{p}k_i\tau_i\right]\right)
-	\psi\left(x - a\left[t_2 + \sum\limits_{i = 1}^{p}k_i\tau_i\right]\right) \;\right\}.
-\end{gathered}
-\end{equation}
-
-Окончательно, имеем
-\begin{equation} \label{int_eta_u_def}
-\int\limits_{0}^{T} \eta(t) u(x,t)\,dt =
-	\begin{cases}
-	\, \sum\limits_{k = 1}^{m - 1} \alpha_k \varPhi(x, \tau_{k - 1}, \tau_k) + \alpha_m \varPhi(x, \tau_{m - 1}, x/a), 
-	\quad \dfrac{x}{a} \in [\tau_{m - 1}, \tau_m], \\[5mm]
-	\, \sum\limits_{k = 1}^{p} \alpha_k \,\varPhi(x, \tau_{k - 1}, \tau_k), \quad \quad \dfrac{x}{a} > T.
-	\end{cases}
-\end{equation}
-
 Программа написана на языке Python.
 
 Ввод данных осуществляется через диалоговое окно. На вход подаются следующие параметры.
@@ -1064,9 +834,9 @@ u(x,t) = U(t)\varphi(x) =
 	\item $l$~--- положительное число, длина рассматриваемого отрезка $[0,l]$.
 	\item $T$~--- положительное число, время наблюдения за процессом.
 	\item $a$~--- положительное число, скорость переноса вещества.
-	\item $\tau$~--- массив вводимых положительных чисел $\tau_1, ..., \tau_{p - 1}$, упорядоченных по возрастанию; 
+	\item $[\tau_1, \tau_2, ..., \tau_{p - 1]}$~--- массив вводимых положительных чисел из интервала $(0,T)$, упорядоченных по возрастанию; 
 	внутренние точки разбиения отрезка $[0,T]$.
-	\item $\alpha$~--- массив чисел $\alpha_1, ..., \alpha_p$, последовательные дискретные
+	\item $[\alpha_1, \alpha_2, ..., \alpha_p]$~--- массив чисел; последовательные дискретные
 	значения кусочно постоянной весовой функции $\eta(t)$, заданные по следующиму принципу
 	\begin{equation*}
 		\eta(0) = \alpha_1, \; \eta(T) = \alpha_p; \qquad \eta(t) = \alpha_i, \quad t \in (\tau_{i - 1}, \tau_i), \quad i = 1, ..., p.
@@ -1077,9 +847,8 @@ u(x,t) = U(t)\varphi(x) =
 		\int\limits_{0}^{T} \eta(t) u(x, t)\,dt = \psi(x), 	\qquad 0 \le x \le l.
 	\end{equation*}
 \end{enumerate}
-Дополнительно предусмотрена возможность ввода натурального числа $N$~--- количества на единичном отрезке. 
-Это число используется для определения числа $|\, \omega \,|$~--- количества точек сетки $\omega = \omega[0,l]$ 
-по формуле $|\, \omega \,| = \lceil\, N \!\cdot\! l \,\rceil$.
+Дополнительно предусмотрена возможность ввода натурального числа $N$~--- количества точек на единичном отрезке. 
+Количество точек сетки $\omega = \omega[0,l]$ по формуле $|\, \omega \,| = \lceil\, N \!\cdot\! l \,\rceil$.
 
 Напомним, что сеткой $\omega[0,l]$ называется совокупность точек $x_0$, $x_1$, ..., $x_n$ из отрезка $[0,l]$ таких, что
 \begin{equation*}
@@ -1087,19 +856,18 @@ u(x,t) = U(t)\varphi(x) =
 \end{equation*}
 
 Сетка $\omega[0,l]$ выбрана равномерной. В точках сетки $\omega[0,l]$ вычисляется искомая функция $\varphi(x)$ и 
-по полученному массиву значений строится график функции $\varphi(x)$.
+по полученному массиву значений строится её график.
 
 В программе реализована валидация (проверка на корректность) входных данных. Все поля ввода снабжены значениями по умолчанию.
 
 На выходе получаем график функции $\varphi(x) = u(x,0)$~--- начального состояния системы.
 
-Также предусмотрена возможность построения решения $u(x,t)$ в последовательные моменты времени $t \ge 0$.
+%Также предусмотрена возможность построения решения $u(x,t)$ в последовательные моменты времени $t \ge 0$.
 
 \subsection{Алгоритм}
 \begin{enumerate}
-	\item Определяются константы $l$, $T$, $a$, массивы $\tau = [\tau_1, \tau_2, ..., \tau_p, 0]$, 
-	$\alpha = \linebreak = [\alpha_1, \alpha_2, ..., \alpha_p, 0]$. Нумерация в массивах начинается с единицы. $p + 1$~-ый элемент 
-	положен нулевым для удобства вычислений. 
+	\item Определяются константы $l$, $T$, $a$, массивы $[\tau_1, \tau_2, ..., \tau_p]$, 
+	$[\alpha_1, \alpha_2, ..., \alpha_p]$.
 	\item Определяются функции $\gamma(t)$, $\psi(x)$.
 	\item Вычисляется константа
 	\begin{equation*}
@@ -1107,64 +875,32 @@ u(x,t) = U(t)\varphi(x) =
 	\end{equation*}
 	\item Определяются функции 
 	\begin{equation*}
-		\int\limits_0^T \eta(t)w(x,t) \,dt, \quad \dfrac{d}{dx}\int\limits_0^T \eta(t)w(x,t) \,dt
+		\int\limits_0^T \eta(t)w(x,t) \,dt, \quad \dfrac{d}{dx}\int\limits_0^T \eta(t)w(x,t) \,dt.
 	\end{equation*}
-	по формулам \eqref{int_eta_w_def}, \eqref{d_int_eta_w_def} соответсвенно.
 	\item Определяются функции $\widetilde{\psi}(x)$, $\widetilde{\psi}\,'(x)$ 
-	по формулам \eqref{tilde_psi}, \eqref{d_tilde_psi} соответсвенно.
-	\item Определяется функция $\varphi(x) = u(x,0)$. 
-	\item Строится сетка $\omega[0,l]$. 
-	\item В узлах сетки вычисляется функция $\varphi(x)$ и по получаемому массиву значений 
-	строится график этой функции.
-	\item В узлах сетки вычисляются функции 
+	\begin{gather*} \label{tilde_psi}
+		\widetilde{\psi}(x) = \psi(x) - \int\limits_0^T \eta(t)w(x,t) \,dt - \psi(0) + \int\limits_0^T \eta(t)\gamma(t) \,dt, \\
+		\widetilde{\psi}\,'(x) = \psi'(x) - \dfrac{d}{dx}\int\limits_0^T \eta(t)w(x,t) \,dt.
+	\end{gather*}
+	\item Определяется функция $\varphi(x) = u(x,0)$ по формуле
 	\begin{equation*}
-		\int\limits_0^T \eta(t)u(x,t) \,dt \quad\text{и}\quad \widetilde{\psi}(x)
-	\end{equation*} 
-	и по получаемым массивам значений строятся их графики.
-\end{enumerate}
-
-Отдельно рассмотрим функцию $\varphi(x)$. Она имеет следующий вид 
-\begin{equation*}
-\begin{aligned}
+	\begin{aligned}
 	& \varphi(x) = a\,\sum\limits_{n = 0}^{n_0 - 1} \frac{1}{\alpha_1^{\,\,n + 1}}
 	\sum\limits_{\substack{{k_i \ge 0} \\_{k_1 + ... + k_p = n}}}\!\!\!\!C_n^{\,k_1, ..., k_p}\;
 	\prod_{m = 1}^{p}(\alpha_m - \alpha_{m + 1})^{k_m} \,\times \\[2mm] \times\,
-	& \Theta\left(x - a\sum\limits_{i = 1}^{p}k_i\tau_i \right)\psi\,'\left(x - a\sum\limits_{i = 1}^{p}k_i\tau_i\right), 
+	& \Theta\!\left(x - a\sum\limits_{i = 1}^{p}k_i\tau_i \right)\psi'\!\left(x - a\sum\limits_{i = 1}^{p}k_i\tau_i\right), 
 	\qquad 0 \le x \le l.
-\end{aligned}
-\end{equation*}
-Ниже приведена её программная реализация в виде псевдокода.
-\begin{lstlisting}[language=C]
-phi(x) {
-	res = 0    // возвращаемое значение
-	n_0 = ceil(x / a / tau[1])
-	b = 1 / alpha[1]
-	for (n = 0; n < n_0; n++){
-		Sum = 0    // внешняя сумма
-		for (array i: i[j] >= 0, j = 1, ..., p, i[1] + ... + i[p] = n){    
-		// пройтись по мультиномиальным индексам
-			sum = 0    // внутренняя сумма
-			for (q = 1; q < p + 1; q++){
-				sum *= i[q] * tau[q]
-			if (x - a*sum < 0) // в силу нильпотентности полугруппы
-				continue 
-			}
-			prod = 1
-			for (q = 1; q < p + 1; q++){
-				prod *= (alpha[q] - alpha[q + 1])^(i[q])    
-				// ^ - возведение в степень; alpha[p + 1] = 0
-			}
-			Sum += d_tilde_psi(x - a*sum) * prod    
-			// d_tilde_psi(x) - производная переопределённой функции tilde_psi(x)
-		} 
-		res += b * sum
-		b *= 1 / alpha[1]
-	}
-	res *= a
-	return res
-}
-
-\end{lstlisting}
+	\end{aligned}
+	\end{equation*}
+	\item Строится сетка $\omega[0,l]$. 
+	\item В узлах сетки вычисляется функция $\varphi(x)$ и по получаемому массиву значений 
+	строится график этой функции.
+	\item В узлах сетки вычисляется функция
+	\begin{equation*}
+		E(x) = \widetilde{\psi}(x) - \int\limits_0^T \eta(t)u(x,t) \,dt \quad \text{(погрешность аппроксимации)}
+	\end{equation*}
+	и по получаемому массиву значений строится её график.
+\end{enumerate}
 
 \newpage
 
@@ -1175,16 +911,16 @@ $l = 10$,  $T = 5$,  $a = 1$, $\tau_1 = 2.5$, $[\alpha_1;\, \alpha_2] = [2;\, 1]
 $\gamma(t) \equiv 0$, $\,\psi(x) = x\exp(-x)$.
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.4cm, 0.6cm, 0, 1.5cm}, clip, scale=0.62]{First1.png}
-	\caption{Заданная функция $\psi(x) = x\exp(-x)$}
-	\label{fig:image1}
+	\includegraphics[trim={2.1cm, 0.6cm, 0, 1.5cm}, clip, scale=0.615]{First2.png}
+	\caption{Найденная функция $\varphi(x)$}
+	\label{fig:image2}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.1cm, 0.6cm, 0, 1.5cm}, clip, scale=0.615]{First2.png}
-	\caption{Найденная функция $\varphi(x)$}
-	\label{fig:image2}
+	\includegraphics[trim={2.4cm, 0.6cm, 0, 1.5cm}, clip, scale=0.62]{First3.png}
+	\caption{Погрешность аппроксимации $E(x)$}
+	\label{fig:image1}
 \end{figure}
 
 Начальное условие $\varphi(x)$ соответствует обобщённому решению $u(x,t)$ в пространстве $L_1[0,l]$.
@@ -1196,16 +932,16 @@ $l = 10$,  $T = 5$,  $a = 1$, $\tau_1 = 2.5$, $[\alpha_1;\, \alpha_2] = [1;\, 2]
 $\gamma(t) \equiv 0$, $\,\psi(x) = x \sin(x/4)$.
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.5cm, 0, 0, 1.5cm}, clip, scale=0.62]{Second1.png}
-	\caption{Заданная функция $\psi(x) = x \sin(x/4)$}
-	\label{fig:image3}
+	\includegraphics[trim={2.5cm, 0, 0, 1.5cm}, clip, scale=0.62]{Second2.png}
+	\caption{Найденная функция $\varphi(x)$}
+	\label{fig:image4}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.5cm, 0, 0, 1.5cm}, clip, scale=0.62]{Second2.png}
-	\caption{Найденная функция $\varphi(x)$}
-	\label{fig:image4}
+	\includegraphics[trim={2.5cm, 0, 0, 1.5cm}, clip, scale=0.62]{Second3.png}
+	\caption{Погрешность аппроксимации $E(x)$}
+	\label{fig:image3}
 \end{figure}
 
 Начальное условие $\varphi(x)$ соответствует обобщённому решению $u(x,t)$ в пространстве $L_1[0,l]$. При этом
@@ -1218,16 +954,16 @@ $l = 10$,  $T = 5$,  $a = 1$, $\tau_1 = 2.5$, $[\alpha_1;\, \alpha_2] = [1;\, 2]
 $\gamma(t) \equiv 0$, $\,\psi(x) = x^3(10 - x)$.
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.1cm, 0, 0, 1.5cm}, clip, scale=0.61]{Third1.png}
-	\caption{Заданная функция $\psi(x) = x^3(10 - x)$}
-	\label{fig:image5}
+	\includegraphics[trim={2.02cm, 0, 0, 1.5cm}, clip, scale=0.61]{Third2.png}
+	\caption{Найденная функция $\varphi(x)$}
+	\label{fig:image6}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.02cm, 0, 0, 1.5cm}, clip, scale=0.61]{Third2.png}
-	\caption{Найденная функция $\varphi(x)$}
-	\label{fig:image6}
+	\includegraphics[trim={2.1cm, 0, 0, 1.5cm}, clip, scale=0.61]{Third3.png}
+	\caption{Погрешность аппроксимации $E(x)$}
+	\label{fig:image5}
 \end{figure}
 
 Начальное условие соответсвует классическому решению $u(x,t)$ в пространстве $L_1[0,l]$. При этом
@@ -1282,7 +1018,7 @@ $\varphi(x) \in C^2[0,l]$.
 при выборе конкретных пространства $E$ и оператора $A$. Сама абстрактная задача решается методом полугрупп, причём в рассматриваемом 
 случае полугруппа нильпотентна. Решение представляется явной формулой в виде конечной суммы. 
 
-Что касается программы, кратко и ясно приведено её описание. Она в точности реализует формулу решения нелокальной задачи. Полученные графики начальных данных и соответствующих им решений продемонстрированы чётко и наглядно.
+Что касается программы, кратко и ясно приведено её описание. Она в точности реализует формулу решения нелокальной задачи. Полученные графики решений и соответсвующих им погрешностей аппроксимации продемонстрированы чётко и наглядно.
 
 \newpage
 
