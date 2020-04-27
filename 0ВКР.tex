@@ -4,11 +4,6 @@
 \usepackage[russianb]{babel}
 \usepackage{vmargin}
 \usepackage{setspace}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{amsfonts}
-\usepackage{amssymb}\setpapersize{A4}
 \setmarginsrb{2.5cm}{1.5cm}{1.5cm}{1.5cm}{0pt}{0mm}{0pt}{13mm}
 \usepackage{indentfirst}
 \usepackage{amsmath}
@@ -18,8 +13,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{subfig}
-\usepackage{listings}
-\graphicspath{{.}}
+\graphicspath{ {./Calculation_results/}{.} }
 \newcommand*{\hm}[1]{#1\nobreak\discretionary{}%
 	{\hbox{$\mathsurround=0pt #1$}}{}}
 \renewcommand{\le}{\leqslant}
@@ -34,102 +28,6 @@
 \newtheorem{definition}{Определение}
 \newtheorem*{remark}{Замечание}
 
-\usepackage{listings}
-\usepackage{xcolor}
-
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-\lstdefinestyle{mystyle}{
-	backgroundcolor=\color{backcolour},   
-	commentstyle=\color{codegreen},
-	keywordstyle=\color{magenta},
-	numberstyle=\scriptsize\color{black},
-	stringstyle=\color{codepurple},
-	basicstyle=\ttfamily\footnotesize,
-	breakatwhitespace=false,         
-	breaklines=true,                 
-	captionpos=b,    
-	extendedchars=true,                
-	keepspaces=true,                 
-	numbers=left,                    
-	numbersep=5pt,                  
-	showspaces=false,                
-	showstringspaces=false,
-	showtabs=false,                  
-	tabsize=2
-}
-
-\lstset{style=mystyle, 
-	literate={а}{{\selectfont\char224}}1
-	{б}{{\selectfont\char225}}1
-	{в}{{\selectfont\char226}}1
-	{г}{{\selectfont\char227}}1
-	{д}{{\selectfont\char228}}1
-	{е}{{\selectfont\char229}}1
-	{ё}{{\"e}}1
-	{ж}{{\selectfont\char230}}1
-	{з}{{\selectfont\char231}}1
-	{и}{{\selectfont\char232}}1
-	{й}{{\selectfont\char233}}1
-	{к}{{\selectfont\char234}}1
-	{л}{{\selectfont\char235}}1
-	{м}{{\selectfont\char236}}1
-	{н}{{\selectfont\char237}}1
-	{о}{{\selectfont\char238}}1
-	{п}{{\selectfont\char239}}1
-	{р}{{\selectfont\char240}}1
-	{с}{{\selectfont\char241}}1
-	{т}{{\selectfont\char242}}1
-	{у}{{\selectfont\char243}}1
-	{ф}{{\selectfont\char244}}1
-	{х}{{\selectfont\char245}}1
-	{ц}{{\selectfont\char246}}1
-	{ч}{{\selectfont\char247}}1
-	{ш}{{\selectfont\char248}}1
-	{щ}{{\selectfont\char249}}1
-	{ъ}{{\selectfont\char250}}1
-	{ы}{{\selectfont\char251}}1
-	{ь}{{\selectfont\char252}}1
-	{э}{{\selectfont\char253}}1
-	{ю}{{\selectfont\char254}}1
-	{я}{{\selectfont\char255}}1
-	{А}{{\selectfont\char192}}1
-	{Б}{{\selectfont\char193}}1
-	{В}{{\selectfont\char194}}1
-	{Г}{{\selectfont\char195}}1
-	{Д}{{\selectfont\char196}}1
-	{Е}{{\selectfont\char197}}1
-	{Ё}{{\"E}}1
-	{Ж}{{\selectfont\char198}}1
-	{З}{{\selectfont\char199}}1
-	{И}{{\selectfont\char200}}1
-	{Й}{{\selectfont\char201}}1
-	{К}{{\selectfont\char202}}1
-	{Л}{{\selectfont\char203}}1
-	{М}{{\selectfont\char204}}1
-	{Н}{{\selectfont\char205}}1
-	{О}{{\selectfont\char206}}1
-	{П}{{\selectfont\char207}}1
-	{Р}{{\selectfont\char208}}1
-	{С}{{\selectfont\char209}}1
-	{Т}{{\selectfont\char210}}1
-	{У}{{\selectfont\char211}}1
-	{Ф}{{\selectfont\char212}}1
-	{Х}{{\selectfont\char213}}1
-	{Ц}{{\selectfont\char214}}1
-	{Ч}{{\selectfont\char215}}1
-	{Ш}{{\selectfont\char216}}1
-	{Щ}{{\selectfont\char217}}1
-	{Ъ}{{\selectfont\char218}}1
-	{Ы}{{\selectfont\char219}}1
-	{Ь}{{\selectfont\char220}}1
-	{Э}{{\selectfont\char221}}1
-	{Ю}{{\selectfont\char222}}1
-	{Я}{{\selectfont\char223}}1
-}
 
 \begin{document}
 	\begin{titlepage}
@@ -168,7 +66,7 @@
 	\end{normalsize}
 	\vfill 
 	
-	\small{Москва, 2019}
+	\small{Нур-Султан, 2020}
 \end{center} 
 
 	\end{titlepage}
@@ -193,6 +91,14 @@
 $\sigma(x) \equiv 0$, $\gamma(t) \equiv 0$.
 
 В конце приводятся результаты вычислительных экспериментов.
+
+Ключевым аспектом работы является применение теории полугрупп операторов к рассматриваемой задаче. 
+Суть заключается в следующем: сформулировать абстрактную задачу, обобщающую данную конкретную задачу,
+решить абстрактную задачу и применить полученные результаты к исходной задаче. 
+
+При подготовке теоретической базы для решения абстрактной задачи была использована пара утверждений из \cite{Pazy},
+доказательство которых в книге было изложено неясно. Потому были приведены собственные доказательства теорем в пункте \ref{Generator}
+
 
 \newpage
 
@@ -315,8 +221,6 @@ w(x,t) =
 
 \newpage
 
-\section*{Основная часть}
-\addcontentsline{toc}{section}{Основная часть}
 \section{Абстрактная задача}
 
 \subsection{Основные определения}
@@ -403,7 +307,7 @@ w(x,t) =
 		U(t) = 0, \qquad \forall t \ge t_0.
 	\end{equation*}
 \end{definition}
-\subsection{Свойства производящего оператора полугруппы}
+\subsection{Свойства производящего оператора полугруппы} \label{Generator}
 \theoremstyle{definition}
 \begin{statement} \label{U(t)x in D(A)}
 	Пусть оператор $A$ порождает полугруппу $U(t)$ класса~$C_0$. Тогда,
@@ -834,7 +738,7 @@ U(t)f(x) =
 	\item $l$~--- положительное число, длина рассматриваемого отрезка $[0,l]$.
 	\item $T$~--- положительное число, время наблюдения за процессом.
 	\item $a$~--- положительное число, скорость переноса вещества.
-	\item $[\tau_1, \tau_2, ..., \tau_{p - 1]}$~--- массив вводимых положительных чисел из интервала $(0,T)$, упорядоченных по возрастанию; 
+	\item $[\tau_1, \tau_2, ..., \tau_{p - 1]}$~--- массив чисел из интервала $(0,T)$, упорядоченных по возрастанию; 
 	внутренние точки разбиения отрезка $[0,T]$.
 	\item $[\alpha_1, \alpha_2, ..., \alpha_p]$~--- массив чисел; последовательные дискретные
 	значения кусочно постоянной весовой функции $\eta(t)$, заданные по следующиму принципу
@@ -905,43 +809,56 @@ U(t)f(x) =
 \newpage
 
 \section{Результаты вычислений}
+Во всех следующих наборах входныx данных $l = 10$,  $T = 5$,  $a = 1$, $\gamma(t) \equiv 0$.
+Поэтому в качестве ввода будут указаваться массивы 
+$[\alpha_1;\, \alpha_2;\, ... \alpha_p]$, $[\tau_1;\, \tau_2;\, ... \tau_{p-1}]$ и функция $\psi(x)$.
 
-Входные данные:
-$l = 10$,  $T = 5$,  $a = 1$, $\tau_1 = 2.5$, $[\alpha_1;\, \alpha_2] = [2;\, 1]$, 
-$\gamma(t) \equiv 0$, $\,\psi(x) = x\exp(-x)$.
+Входные данные: 
+$\tau_1 = 2.5$, $[\alpha_1;\, \alpha_2] = [2;\, 1]\;$, $\;\psi(x) = x\exp(-x)$.
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.1cm, 0.6cm, 0, 1.5cm}, clip, scale=0.615]{First2.png}
+	\includegraphics[trim={2.1cm, 0.6cm, 0, 1.5cm}, clip, scale=0.615]{1_psi.png}
+	\caption{Заданная функция $\psi(x)$}
+	\label{fig:image1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.1cm, 0.6cm, 0, 1.5cm}, clip, scale=0.615]{1_u0.png}
 	\caption{Найденная функция $\varphi(x)$}
 	\label{fig:image2}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.4cm, 0.6cm, 0, 1.5cm}, clip, scale=0.62]{First3.png}
+	\includegraphics[trim={2.4cm, 0.6cm, 0, 1.5cm}, clip, scale=0.62]{1_E.png}
 	\caption{Погрешность аппроксимации $E(x)$}
-	\label{fig:image1}
+	\label{fig:image3}
 \end{figure}
 
 Начальное условие $\varphi(x)$ соответствует обобщённому решению $u(x,t)$ в пространстве $L_1[0,l]$.
-\goodbreak
-\newpage	
 
-Входные данные: 
-$l = 10$,  $T = 5$,  $a = 1$, $\tau_1 = 2.5$, $[\alpha_1;\, \alpha_2] = [1;\, 2]$, 
-$\gamma(t) \equiv 0$, $\,\psi(x) = x \sin(x/4)$.
+\vspace{5mm}
+Входные данные: $\tau_1 = 2.5$, $\;[\alpha_1;\, \alpha_2] = [1;\, 2]$, $\;\psi(x) = x \arctg(x)$.
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.5cm, 0, 0, 1.5cm}, clip, scale=0.62]{Second2.png}
-	\caption{Найденная функция $\varphi(x)$}
+	\includegraphics[trim={2.5cm, 0, 0, 1.5cm}, clip, scale=0.62]{2_psi.png}
+	\caption{Заданная функция $\psi(x)$}
 	\label{fig:image4}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.5cm, 0, 0, 1.5cm}, clip, scale=0.62]{Second3.png}
+	\includegraphics[trim={2.5cm, 0, 0, 1.5cm}, clip, scale=0.62]{2_u0.png}
+	\caption{Найденная функция $\varphi(x)$}
+	\label{fig:image5}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.5cm, 0, 0, 1.5cm}, clip, scale=0.62]{2_E.png}
 	\caption{Погрешность аппроксимации $E(x)$}
-	\label{fig:image3}
+	\label{fig:image6}
 \end{figure}
 
 Начальное условие $\varphi(x)$ соответствует обобщённому решению $u(x,t)$ в пространстве $L_1[0,l]$. При этом
@@ -950,64 +867,183 @@ $\varphi(x) \in C[0,l]$.
 \newpage	
 
 Входные данные: 
-$l = 10$,  $T = 5$,  $a = 1$, $\tau_1 = 2.5$, $[\alpha_1;\, \alpha_2] = [1;\, 2]$, 
-$\gamma(t) \equiv 0$, $\,\psi(x) = x^3(10 - x)$.
+$\tau_1 = 2.5$, $\;[\alpha_1;\, \alpha_2] = [1;\, 2]$, $\;\psi(x) = x^3(10 - x)$.
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.02cm, 0, 0, 1.5cm}, clip, scale=0.61]{Third2.png}
+	\includegraphics[trim={2.02cm, 0, 0, 1.5cm}, clip, scale=0.61]{3_psi.png}
+	\caption{Найденная функция $\psi(x)$}
+	\label{fig:image7}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.02cm, 0, 0, 1.5cm}, clip, scale=0.61]{3_u0.png}
 	\caption{Найденная функция $\varphi(x)$}
-	\label{fig:image6}
+	\label{fig:image8}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[trim={2.1cm, 0, 0, 1.5cm}, clip, scale=0.61]{Third3.png}
+	\includegraphics[trim={2.1cm, 0, 0, 1.5cm}, clip, scale=0.61]{3_E.png}
 	\caption{Погрешность аппроксимации $E(x)$}
-	\label{fig:image5}
+	\label{fig:image9}
 \end{figure}
 
 Начальное условие соответсвует классическому решению $u(x,t)$ в пространстве $L_1[0,l]$. При этом
 $\varphi(x) \in C^2[0,l]$.
+\vspace{5mm}
+
+Входные данные: \\
+$[\tau_1;\, \tau_2] = [1.666;\, 3.333]$, $\;[\alpha_1;\, \alpha_2;\, \alpha_3] = [3;\, 2;\, 1]$, 
+$\;\psi(x) = x - \sin(x)$.
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.475cm, 0, 0, 1.5cm}, clip, scale=0.624]{410_psi.png}
+	\caption{Заданная функция $\psi(x)$}
+	\label{fig:image10}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.3cm, 0, 0, 1.5cm}, clip, scale=0.62]{4_u0.png}
+	\caption{Найденная функция $\varphi(x)$}
+	\label{fig:image11}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.475cm, 0, 0, 1.5cm}, clip, scale=0.624]{4_E.png}
+	\caption{Погрешность аппроксимации $E(x)$}
+	\label{fig:image12}
+\end{figure}
 
 \newpage	
 
-%Входные данные: 
-%$l = 10$,  $T = 5$,  $a = 1$, $[\tau_1;\, \tau_2] = [1.666;\, 3.333]$, \linebreak 
-%$[\alpha_1;\, \alpha_2;\, \alpha_3] = [1;\, 3;\, 5]$, $\gamma(t) \equiv 0$, $\,\psi(x) = x - \sin(x)$.
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[trim={2.475cm, 0, 0, 1.5cm}, clip, scale=0.624]{Forth1.png}
-%	\caption{Заданная функция $\psi(x) = x - \sin(x)$}
-%	\label{fig:image7}
-%\end{figure}
-%
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[trim={2.3cm, 0, 0, 1.5cm}, clip, scale=0.62]{Forth2.png}
-%	\caption{Найденная функция $\varphi(x)$}
-%	\label{fig:image8}
-%\end{figure}
-%
-%\newpage	
-%
-%Входные данные: 
-%$l = 10$,  $T = 5$,  $a = 1$, $[\tau_1;\, \tau_2] = [1.666;\, 3.333]$, \linebreak 
-%$[\alpha_1;\, \alpha_2;\, \alpha_3] = [1;\, 2.5;\, 1]$, $\gamma(t) \equiv 0$, $\,\psi(x) = \sin(x) - \arctg(x)$.
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[trim={2.15cm, 0, 0, 1.5cm}, clip, scale=0.617]{Fifth1.png}
-%	\caption{Заданная функция $\psi(x) = \sin(x) - \arctg(x) $}
-%	\label{fig:image9}
-%\end{figure}
-%
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[trim={2.3cm, 0, 0, 1.5cm}, clip, scale=0.62]{Fifth2.png}
-%	\caption{Найденная функция $\varphi(x)$}
-%	\label{fig:image10}
-%\end{figure}
-%
-%\newpage
+Входные данные: \\
+$[\tau_1;\, \tau_2] = [1.666;\, 3.333]$, $\;[\alpha_1;\, \alpha_2;\, \alpha_3] = [1;\, 2;\, 3]$,
+$\;\psi(x) = x - \sin(x)$.
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.3cm, 0, 0, 1.5cm}, clip, scale=0.62]{10_u0.png}
+	\caption{Найденная функция $\varphi(x)$}
+	\label{fig:image13}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.2cm, 0, 0, 1.5cm}, clip, scale=0.617]{10_E.png}
+	\caption{Погрешность аппроксимации $E(x)$}
+	\label{fig:image14}
+\end{figure}
+
+\newpage
+
+Входные данные: 
+$[\tau_1;\, \tau_2;\, \tau_3;\, \tau_4] = [1;\, 2;\, 3;\, 4]$, \\[1mm]
+$[\alpha_1;\, \alpha_2;\, \alpha_3;\, \alpha_4;\, \alpha_5] = [2;\, 1;\, 2;\, 1;\, 2]$, 
+$\,\psi(x) = \arctan(x)(1 - \cos(x))$.
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.475cm, 0, 0, 1.5cm}, clip, scale=0.624]{56_psi.png}
+	\caption{Заданная функция $\psi(x)$}
+	\label{fig:image15}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.175cm, 0, 0, 1.5cm}, clip, scale=0.618]{5_u0.png}
+	\caption{Найденная функция $\varphi(x)$}
+	\label{fig:image16}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.175cm, 0, 0, 1.5cm}, clip, scale=0.618]{5_E.png}
+	\caption{Погрешность аппроксимации $E(x)$}
+	\label{fig:image17}
+\end{figure}
+
+Входные данные: 
+$[\tau_1;\, \tau_2;\, \tau_3;\, \tau_4] = [1;\, 2;\, 3;\, 4]$, \\[1mm]
+$[\alpha_1;\, \alpha_2;\, \alpha_3;\, \alpha_4;\, \alpha_5] = [1;\, 2;\, 1;\, 2;\, 1]$, 
+$\;\psi(x) = \arctan(x)(1 - \cos(x))$.
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.15cm, 0, 0, 1.5cm}, clip, scale=0.618]{6_u0.png}
+	\caption{Найденная функция $\varphi(x)$}
+	\label{fig:image18}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.15cm, 0, 0, 1.5cm}, clip, scale=0.618]{6_E.png}
+	\caption{Погрешность аппроксимации $E(x)$}
+	\label{fig:image19}
+\end{figure}
+
+Входные данные: \\
+$[\tau_1;\, \tau_2] = [1.666;\, 3.333]$, 
+$\;[\alpha_1;\, \alpha_2;\, \alpha_3] = [1;\, 2;\, 3]$,
+$\;\psi(x) = x^3$.
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.475cm, 0, 0, 1.5cm}, clip, scale=0.624]{789_psi.png}
+	\caption{Заданная функция $\psi(x)$}
+	\label{fig:image20}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.175cm, 0, 0, 1.5cm}, clip, scale=0.618]{7_u0.png}
+	\caption{Найденная функция $\varphi(x)$}
+	\label{fig:image21}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.175cm, 0, 0, 1.5cm}, clip, scale=0.618]{7_E.png}
+	\caption{Погрешность аппроксимации $E(x)$}
+	\label{fig:image22}
+\end{figure}
+
+Входные данные: \\
+$[\tau_1;\, \tau_2;\, \tau_3;\, \tau_4] = [1;\, 2;\, 3;\, 4]$, 
+$[\alpha_1;\, \alpha_2;\, \alpha_3;\, \alpha_4;\, \alpha_5] = [1;\, 2;\, 3;\, 4;\, 5]$, 
+$\,\psi(x) = x^3$.
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.175cm, 0, 0, 1.5cm}, clip, scale=0.618]{8_u0.png}
+	\caption{Найденная функция $\varphi(x)$}
+	\label{fig:image23}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.175cm, 0, 0, 1.5cm}, clip, scale=0.618]{8_E.png}
+	\caption{Погрешность аппроксимации $E(x)$}
+	\label{fig:image24}
+\end{figure}
+
+Входные данные: \\
+$[\tau_1;\, \tau_2;\, \tau_3;\, \tau_4;\, \tau_5;\, \tau_6;\, \tau_7] = 
+[0.625;\, 1.25;\, 1.875;\, 2.5;\, 3.125;\, 3.75;\, 4.375]$, \\[1mm]
+$[\alpha_1;\, \alpha_2;\, \alpha_3;\, \alpha_4;\, \alpha_5;\, \alpha_6;\, \alpha_7;\, \alpha_8] = 
+[1;\, 2;\, 3;\, 4;\, 5;\, 6;\, 7;\, 8]$, 
+$\,\psi(x) = x^3$.
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.175cm, 0, 0, 1.5cm}, clip, scale=0.618]{9_u0.png}
+	\caption{Найденная функция $\varphi(x)$}
+	\label{fig:image25}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim={2.175cm, 0, 0, 1.5cm}, clip, scale=0.618]{9_E.png}
+	\caption{Погрешность аппроксимации $E(x)$}
+	\label{fig:image26}
+\end{figure}
+
+\newpage
 
 \section*{Заключение}
 \addcontentsline{toc}{section}{Заключение}
@@ -1027,8 +1063,8 @@ $\varphi(x) \in C^2[0,l]$.
 \addcontentsline{toc}{section}{\bibname}
 
 	\bibitem{Tikhonov1} Тихонов~И.~В., Ву~Нгуен~Шон~Тунг.
-	\emph{Разрешимость нелокальной задачи для эволюционного уравнения переноса с суперустойчивой полугруппой}
-	// Дифференциальные уравнения (в печати).
+	\emph{Разрешимость нелокальной задачи для эволюционного уравнения с суперустойчивой полугруппой}
+	// Дифференциальные уравнения. 2020. Т. 56. №4. С. 490-510.
 	
 	\bibitem{Tikhonov2} Тихонов~И.~В., Ву~Нгуен~Шон~Тунг.
 	\emph{Формулы явного решения в модельной нелокальной задаче для уравнения простого переноса}
